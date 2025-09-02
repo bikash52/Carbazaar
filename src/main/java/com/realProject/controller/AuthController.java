@@ -13,10 +13,20 @@ import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+
 import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/v1/auth")
+@Tag(name = "Authentication", description = "User authentication and registration endpoints")
 public class AuthController {
 
     @Autowired
@@ -31,8 +41,18 @@ public class AuthController {
         @Autowired
         private JWTService jwtService;
 
+    @Operation(
+            summary = "User Registration",
+            description = "Register a new user account in the CarBazzar platform"
+    )
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "User registered successfully"),
+            @ApiResponse(responseCode = "400", description = "Invalid user data"),
+            @ApiResponse(responseCode = "409", description = "User already exists")
+    })
     @PostMapping("/signup")
     public ResponseEntity<?> createUser(
+            @Parameter(description = "User registration details", required = true)
             @RequestBody User user
             ){
         ResponseEntity<?> response = userService.createUser(user);
@@ -41,8 +61,18 @@ public class AuthController {
 
 
 
+    @Operation(
+            summary = "User Login",
+            description = "Authenticate user and receive JWT token for API access"
+    )
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "Login successful, JWT token returned", 
+                    content = @Content(schema = @Schema(implementation = JWTDto.class))),
+            @ApiResponse(responseCode = "401", description = "Invalid credentials")
+    })
     @PostMapping("/signin")
     public ResponseEntity<?> usersignin(
+            @Parameter(description = "User login credentials", required = true)
             @RequestBody LoginDto  dto
             ){
         String jwtToken = userService.usersignin(dto);

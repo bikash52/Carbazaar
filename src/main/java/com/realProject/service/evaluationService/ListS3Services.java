@@ -1,5 +1,7 @@
 package com.realProject.service.evaluationService;
 
+// AWS S3 ListS3Services disabled - using mock implementation
+/*
 import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -62,3 +64,26 @@ public class ListS3Services {
             return fileUrls;
         }
     }
+*/
+
+// Mock ListS3Services for development without AWS S3
+import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
+
+@Service
+public class ListS3Services {
+
+    public List<String> uploadFiles(List<MultipartFile> files) {
+        List<String> fileUrls = new ArrayList<>();
+        for (MultipartFile file : files) {
+            String fileName = UUID.randomUUID() + "_" + file.getOriginalFilename();
+            System.out.println("Mock S3 Upload - File: " + fileName + ", Size: " + file.getSize() + " bytes");
+            fileUrls.add("https://mock-bucket.s3.amazonaws.com/" + fileName);
+        }
+        return fileUrls;
+    }
+}

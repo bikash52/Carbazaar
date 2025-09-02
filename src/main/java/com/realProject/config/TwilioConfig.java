@@ -1,5 +1,7 @@
 package com.realProject.config;
 
+// Twilio integration disabled
+/*
 import org.springframework.context.annotation.Configuration;
 import com.twilio.Twilio;
 import org.springframework.beans.factory.annotation.Value;
@@ -20,4 +22,5 @@ public class TwilioConfig {
         Twilio.init(accountSid, authToken);
     }
 }
+*/
 
