@@ -31,3 +31,14 @@ build/
 
 ### VS Code ###
 .vscode/
+
+### Security ###
+# Exclude sensitive configuration files
+src/main/resources/application.properties
+src/main/resources/application-*.properties
+*.env
+.env
+
+### Logs ###
+*.log
+logs/
